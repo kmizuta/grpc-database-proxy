@@ -3,17 +3,98 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.oracle.techarch</groupId>
-    <artifactId>grpc-project</artifactId>
+    <groupId>oracle.spectra.database</groupId>
+    <artifactId>grpc-database-proxy-project</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <version.plugin.os-maven>1.7.1</version.plugin.os-maven>
+        <version.plugin.maven-compiler>3.10.1</version.plugin.maven-compiler>
+        <version.plugin.protobuf-maven>0.6.1</version.plugin.protobuf-maven>
+
+        <version.lib.helidon>3.1.0</version.lib.helidon>
+        <version.lib.grpc>1.52.0</version.lib.grpc>
+        <version.lib.annotations-api>6.0.53</version.lib.annotations-api>
     </properties>
 
     <modules>
-      <module>grpc-server</module>
-      <module>proto</module>
+        <module>proxy-proto</module>
+        <module>proxy-client</module>
+        <module>proxy-server</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>oracle.spectra.database</groupId>
+                <artifactId>proxy-proto</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>oracle.spectra.database</groupId>
+                <artifactId>proxy-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.helidon</groupId>
+                <artifactId>helidon-dependencies</artifactId>
+                <version>${version.lib.helidon}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-netty-shaded</artifactId>
+                <version>${version.lib.grpc}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-protobuf</artifactId>
+                <version>${version.lib.grpc}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-stub</artifactId>
+                <version>${version.lib.grpc}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>annotations-api</artifactId>
+                <version>${version.lib.annotations-api}</version>
+                <scope>provided</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.plugin.maven-compiler}</version>
+                    <configuration>
+                        <source>19</source>
+                        <target>19</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.xolstice.maven.plugins</groupId>
+                    <artifactId>protobuf-maven-plugin</artifactId>
+                    <version>${version.plugin.protobuf-maven}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
