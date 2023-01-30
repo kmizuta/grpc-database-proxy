@@ -1,0 +1,7 @@
+syntax = "proto3";
+option java_package = "com.oracle.techarch.grpc.model";
+
+message StringMessage {
+  string text = 1;
+}
+

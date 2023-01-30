@@ -1,0 +1,148 @@
+syntax = "proto3";
+option java_package = "oracle.spectra.database.model";
+
+enum Command {
+  COMMAND_PREPAREQUERY = 0;
+  COMMAND_PREPARECALL = 1;
+  COMMAND_BIND = 2;
+  COMMAND_EXECUTE = 3;
+  COMMAND_EXECUTEQUERY = 4;
+  COMMAND_NEXTROWS = 5;
+  COMMAND_CLOSERESULTSET = 6;
+  COMMAND_CLOSEQUERYSTATEMENT = 7;
+  COMMAND_CLOSECALLSTATEMENT = 8;
+  COMMAND_ERROR = 9;
+}
+
+message DatabaseCommand {
+  Command type = 1;
+  oneof content {
+      PrepareRequest prepareQuery = 2;
+      PrepareRequest prepreCall = 3;
+      BindRequest bind = 4;
+      ExecuteRequest execute = 5;
+      ExecuteQueryRequest executeQuery = 6;
+      NextRowsRequest nextRows = 7;
+    CloseResultSetRequest closeResultSet = 8;
+    CloseQueryStatementRequest closeQueryStatement = 9;
+    CloseCallStatementRequest closeCallStatement = 10;
+  }
+}
+
+message DatabaseResult {
+  Command type = 1;
+  oneof content {
+    PrepareResponse prepareQuery = 2;
+    PrepareResponse prepareCall = 3;
+    BindResponse bind = 4;
+    ExecuteResponse execute = 5;
+    ExecuteQueryResponse executeQuery = 6;
+    NextRowsResponse nextRows = 7;
+    CloseResultSetResponse closeResultSet = 8;
+    CloseQueryStatementResponse closeQueryStatement = 9;
+    CloseCallStatementResponse closeCallStatement = 10;
+    ErrorResponse error = 11;
+  }
+}
+
+message ErrorResponse {
+  string errorMessage = 1;
+  string stackTrace = 2;
+}
+
+message PrepareRequest {
+  string sql = 1;
+}
+
+message PrepareResponse {
+  int32 statementId = 1;
+  int32 columnCount = 2;
+  repeated string columnNames = 3;
+}
+
+message BindRequest {
+  int32 statementId = 1;
+  map<string, Value> values = 2;
+}
+
+message BindResponse {
+}
+
+message ExecuteRequest {
+
+}
+
+message ExecuteResponse {
+
+}
+
+message ExecuteQueryRequest {
+  int32 statementId = 1;
+}
+
+message ExecuteQueryResponse {
+  int32 resultSetId = 1;
+}
+
+message NextRowsRequest {
+  int32 statementId = 1;
+  int32 resultSetId = 2;
+}
+
+message NextRowsResponse {
+  repeated Row row = 1;
+  bool hasMore = 2;
+}
+
+message CloseResultSetRequest {
+  int32 resultSetId = 1;
+}
+
+message CloseResultSetResponse {
+
+}
+
+message CloseQueryStatementRequest {
+  int32 statementId = 1;
+}
+
+message CloseQueryStatementResponse {
+
+}
+
+message CloseCallStatementRequest {
+  int32 statementId = 1;
+}
+
+message CloseCallStatementResponse {
+
+}
+
+message Row {
+  repeated Field field = 1;
+}
+
+message Field {
+  string name = 1;
+  Value value = 2;
+}
+
+message Value {
+  ValueType type = 1;
+  bool isNull = 2;
+  oneof content {
+    string decimal = 3;
+    int64 int = 4;
+    string text = 5;
+    string date = 6;
+  }
+}
+
+enum ValueType {
+  VALUE_UNKNOWN = 0;
+  VALUE_DECIMAL = 1;
+  VALUE_INTEGRAL = 2;
+  VALUE_TEXT = 3;
+  VALUE_DATE = 4;
+}
+

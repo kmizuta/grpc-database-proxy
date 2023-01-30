@@ -1,0 +1,3 @@
+# WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="/Users/kmizuta/work/grpc/tnsadmin")))
+SSL_SERVER_DN_MATCH=yes
