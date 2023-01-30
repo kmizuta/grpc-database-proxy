@@ -19,9 +19,7 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
 
-        <version.lib.ucp>19.17.0.0</version.lib.ucp>
-        <version.lib.ojdbc>19.3.0.0</version.lib.ojdbc>
-        <version.lib.helidon>3.1.0</version.lib.helidon>
+        <version.lib.ojdbc>19.17.0.0</version.lib.ojdbc>
     </properties>
 
     <dependencies>
@@ -44,29 +42,29 @@
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ucp</artifactId>
-            <version>${version.lib.ucp}</version>
+            <version>${version.lib.ojdbc}</version>
         </dependency>
 
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc10</artifactId>
-            <version>${version.lib.ucp}</version>
+            <version>${version.lib.ojdbc}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.oracle.ojdbc</groupId>
+            <groupId>com.oracle.database.security</groupId>
             <artifactId>oraclepki</artifactId>
             <version>${version.lib.ojdbc}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.oracle.ojdbc</groupId>
+            <groupId>com.oracle.database.security</groupId>
             <artifactId>osdt_cert</artifactId>
             <version>${version.lib.ojdbc}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.oracle.ojdbc</groupId>
+            <groupId>com.oracle.database.security</groupId>
             <artifactId>osdt_core</artifactId>
             <version>${version.lib.ojdbc}</version>
         </dependency>
