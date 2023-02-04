@@ -23,9 +23,9 @@
     </properties>
 
     <modules>
-        <module>proxy-proto</module>
-        <module>proxy-client</module>
-        <module>proxy-server</module>
+        <module>database-proxy-proto</module>
+        <module>database-proxy-client-java</module>
+        <module>database-proxy-server</module>
     </modules>
 
     <dependencyManagement>

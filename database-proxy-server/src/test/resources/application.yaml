@@ -1,0 +1,26 @@
+grpc:
+  channels:
+    test-server:
+      host: localhost
+      port: 8080
+
+  name: techarch.server
+  port: 8080
+
+database:
+  proxy:
+    connection: oracle.ucp.jdbc.PoolDataSource.ApplicationDS
+
+oracle:
+  ucp:
+    jdbc:
+      PoolDataSource:
+        ApplicationDS:
+          connectionFactoryClassName: oracle.jdbc.pool.OracleDataSource
+          URL: jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-ashburn-1.oraclecloud.com))(connect_data=(service_name=myeuacmnbcwpupn_kmizutatest_low.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)(WALLET_LOCATION=/Users/kmizuta/work/grpc/wallet))))
+          user: scott
+          password: TigerManager123!
+          minPoolSize: 1
+          maxPoolSize: 2
+          connectionHarvestTriggerCount: 6
+          connectionHarvestMaxCount: 2
