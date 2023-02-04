@@ -2,45 +2,45 @@ syntax = "proto3";
 option java_package = "oracle.spectra.database.model";
 
 enum Command {
-  COMMAND_PREPAREQUERY = 0;
+  COMMAND_PREPARESTATEMENT = 0;
   COMMAND_PREPARECALL = 1;
   COMMAND_BIND = 2;
   COMMAND_EXECUTE = 3;
   COMMAND_EXECUTEQUERY = 4;
   COMMAND_NEXTROWS = 5;
   COMMAND_CLOSERESULTSET = 6;
-  COMMAND_CLOSEQUERYSTATEMENT = 7;
-  COMMAND_CLOSECALLSTATEMENT = 8;
+  COMMAND_CLOSEPREPAREDSTATEMENT = 7;
+  COMMAND_CLOSECALLABLESTATEMENT = 8;
   COMMAND_ERROR = 9;
 }
 
 message DatabaseCommand {
   Command type = 1;
   oneof content {
-      PrepareRequest prepareQuery = 2;
-      PrepareRequest prepreCall = 3;
+      PrepareStatementRequest prepareStatement = 2;
+      PrepareCallRequest prepareCall = 3;
       BindRequest bind = 4;
       ExecuteRequest execute = 5;
       ExecuteQueryRequest executeQuery = 6;
       NextRowsRequest nextRows = 7;
-    CloseResultSetRequest closeResultSet = 8;
-    CloseQueryStatementRequest closeQueryStatement = 9;
-    CloseCallStatementRequest closeCallStatement = 10;
+      CloseResultSetRequest closeResultSet = 8;
+      ClosePreparedStatementRequest closePreparedStatement = 9;
+      CloseCallableStatementRequest closeCallableStatement = 10;
   }
 }
 
 message DatabaseResult {
   Command type = 1;
   oneof content {
-    PrepareResponse prepareQuery = 2;
-    PrepareResponse prepareCall = 3;
+    PrepareStatementResponse prepareStatement = 2;
+    PrepareCallResponse prepareCall = 3;
     BindResponse bind = 4;
     ExecuteResponse execute = 5;
     ExecuteQueryResponse executeQuery = 6;
     NextRowsResponse nextRows = 7;
     CloseResultSetResponse closeResultSet = 8;
-    CloseQueryStatementResponse closeQueryStatement = 9;
-    CloseCallStatementResponse closeCallStatement = 10;
+    ClosePreparedStatementResponse closePreparedStatement = 9;
+    CloseCallableStatementResponse closeCallableStatement = 10;
     ErrorResponse error = 11;
   }
 }
@@ -50,14 +50,22 @@ message ErrorResponse {
   string stackTrace = 2;
 }
 
-message PrepareRequest {
+message PrepareStatementRequest {
   string sql = 1;
 }
 
-message PrepareResponse {
+message PrepareStatementResponse {
   int32 statementId = 1;
   int32 columnCount = 2;
   repeated string columnNames = 3;
+}
+
+message PrepareCallRequest {
+  string sql = 1;
+}
+
+message PrepareCallResponse {
+  int32 statementId = 1;
 }
 
 message BindRequest {
@@ -69,7 +77,7 @@ message BindResponse {
 }
 
 message ExecuteRequest {
-
+  int32 statementId = 1;
 }
 
 message ExecuteResponse {
@@ -102,19 +110,19 @@ message CloseResultSetResponse {
 
 }
 
-message CloseQueryStatementRequest {
+message ClosePreparedStatementRequest {
   int32 statementId = 1;
 }
 
-message CloseQueryStatementResponse {
+message ClosePreparedStatementResponse {
 
 }
 
-message CloseCallStatementRequest {
+message CloseCallableStatementRequest {
   int32 statementId = 1;
 }
 
-message CloseCallStatementResponse {
+message CloseCallableStatementResponse {
 
 }
 

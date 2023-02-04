@@ -1,23 +1,22 @@
 package oracle.spectra.database.server.commands;
 
 import oracle.jdbc.OraclePreparedStatement;
-import oracle.spectra.database.model.CommandModel;
 import oracle.spectra.database.model.CommandModel.DatabaseCommand;
 import oracle.spectra.database.model.CommandModel.DatabaseResult;
-import oracle.spectra.database.server.QueryStatement;
+import oracle.spectra.database.model.CommandModel.PrepareStatementResponse;
 
 import java.sql.Connection;
 
-public class PrepareQueryProcessor extends CommandProcessor {
+public class PrepareStatementProcessor extends CommandProcessor {
 
     @Override
     DatabaseResult doCommandImpl(Connection conn, DatabaseCommand command) throws Throwable {
-        var prepareQueryRequest = command.getPrepareQuery();
-        var sql = prepareQueryRequest.getSql();
+        var prepareStatementRequest = command.getPrepareStatement();
+        var sql = prepareStatementRequest.getSql();
         var stmt = (OraclePreparedStatement) conn.prepareStatement(sql);
-        var queryStmt = new QueryStatement(stmt);
-        var idx = QueryStatement.add(queryStmt);
-        var prepareResponseBuilder = CommandModel.PrepareResponse.newBuilder()
+        var queryStmt = new ProxyPreparedStatement(stmt);
+        var idx = ProxyPreparedStatement.add(queryStmt);
+        var prepareResponseBuilder = PrepareStatementResponse.newBuilder()
                 .setStatementId(idx);
         var columnCount = queryStmt.getColumnCount();
         prepareResponseBuilder.setColumnCount(columnCount);
@@ -26,7 +25,7 @@ public class PrepareQueryProcessor extends CommandProcessor {
         }
         return DatabaseResult.newBuilder()
                 .setType(command.getType())
-                .setPrepareQuery(prepareResponseBuilder.build())
+                .setPrepareStatement(prepareResponseBuilder.build())
                 .build();
     }
 }

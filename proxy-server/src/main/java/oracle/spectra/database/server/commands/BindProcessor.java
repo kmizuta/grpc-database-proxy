@@ -3,7 +3,6 @@ package oracle.spectra.database.server.commands;
 import oracle.spectra.database.model.CommandModel;
 import oracle.spectra.database.model.CommandModel.DatabaseCommand;
 import oracle.spectra.database.model.CommandModel.DatabaseResult;
-import oracle.spectra.database.server.QueryStatement;
 
 import java.sql.Connection;
 
@@ -13,7 +12,7 @@ public class BindProcessor extends CommandProcessor {
     DatabaseResult doCommandImpl(Connection conn, DatabaseCommand command) throws Throwable {
         var bind = command.getBind();
         var idx = bind.getStatementId();
-        var queryStmt = QueryStatement.get(idx);
+        var queryStmt = ProxyPreparedStatement.get(idx);
         var stmt = queryStmt.getStatement();
         var valuesMap = bind.getValuesMap();
         for (String k : valuesMap.keySet()) {

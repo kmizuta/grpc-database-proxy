@@ -1,33 +1,34 @@
 package oracle.spectra.database.client;
 
 import oracle.spectra.database.model.CommandModel.BindRequest;
+import oracle.spectra.database.model.CommandModel.ClosePreparedStatementRequest;
 import oracle.spectra.database.model.CommandModel.Command;
 import oracle.spectra.database.model.CommandModel.DatabaseCommand;
 import oracle.spectra.database.model.CommandModel.ExecuteQueryRequest;
-import oracle.spectra.database.model.CommandModel.PrepareRequest;
-import oracle.spectra.database.model.CommandModel.PrepareResponse;
+import oracle.spectra.database.model.CommandModel.PrepareStatementRequest;
+import oracle.spectra.database.model.CommandModel.PrepareStatementResponse;
 import oracle.spectra.database.model.CommandModel.Value;
 import oracle.spectra.database.model.CommandModel.ValueType;
 
 import java.sql.SQLException;
 
-public class DatabaseQueryStatement {
+public class DatabasePreparedStatement {
 
     private final DatabaseRequestResponseManager manager;
     private BindRequest.Builder bindRequestBuilder;
-    private final PrepareResponse response;
+    private final PrepareStatementResponse response;
 
-    DatabaseQueryStatement(DatabaseRequestResponseManager manager, String sql) throws SQLException {
+    DatabasePreparedStatement(DatabaseRequestResponseManager manager, String sql) throws SQLException {
         this.manager = manager;
         this.bindRequestBuilder = null;
 
         var result = manager.execute(DatabaseCommand.newBuilder()
-                .setType(Command.COMMAND_PREPAREQUERY)
-                .setPrepareQuery(PrepareRequest.newBuilder()
+                .setType(Command.COMMAND_PREPARESTATEMENT)
+                .setPrepareStatement(PrepareStatementRequest.newBuilder()
                         .setSql(sql).build())
                 .build());
         DatabaseClient.checkError(result);
-        response = result.getPrepareQuery();
+        response = result.getPrepareStatement();
     }
 
     public void bind(String name, String textValue) {
@@ -82,6 +83,17 @@ public class DatabaseQueryStatement {
 
     public String getColumnName(int idx) {
         return response.getColumnNames(idx-1);
+    }
+
+    public void close() throws SQLException {
+        var closeRequest = ClosePreparedStatementRequest.newBuilder()
+                .setStatementId(response.getStatementId())
+                .build();
+        var closeResponse = manager.execute(DatabaseCommand.newBuilder()
+                .setType(Command.COMMAND_CLOSEPREPAREDSTATEMENT)
+                .setClosePreparedStatement(closeRequest)
+                .build());
+        DatabaseClient.checkError(closeResponse);
     }
 
 }

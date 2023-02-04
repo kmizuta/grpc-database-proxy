@@ -19,7 +19,7 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
 
-        <version.lib.ojdbc>19.17.0.0</version.lib.ojdbc>
+        <version.lib.ojdbc>19.15.0.0</version.lib.ojdbc>
     </properties>
 
     <dependencies>

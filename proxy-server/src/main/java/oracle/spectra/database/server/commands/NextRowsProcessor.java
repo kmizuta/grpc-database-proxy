@@ -3,7 +3,6 @@ package oracle.spectra.database.server.commands;
 import oracle.spectra.database.model.CommandModel;
 import oracle.spectra.database.model.CommandModel.DatabaseCommand;
 import oracle.spectra.database.model.CommandModel.DatabaseResult;
-import oracle.spectra.database.server.QueryStatement;
 
 import java.sql.Connection;
 
@@ -12,12 +11,12 @@ public class NextRowsProcessor extends CommandProcessor {
     @Override
     DatabaseResult doCommandImpl(Connection conn, DatabaseCommand command) throws Throwable {
         var nextRows = command.getNextRows();
-        var stmtIdx = nextRows.getStatementId();
         var rsetIdx = nextRows.getResultSetId();
-        var queryStmt = QueryStatement.get(stmtIdx);
-        var rset = queryStmt.getResultSet(rsetIdx);
+        var resultSet = ProxyResultSet.get(rsetIdx);
+        var queryStmt = resultSet.getPreparedStatement();
         var fetchSize = queryStmt.getFetchSize();
         var columnCount = queryStmt.getColumnCount();
+        var rset = resultSet.getResultSet();
         var responseBuilder = CommandModel.NextRowsResponse.newBuilder().setHasMore(true);
         for (int i = 0; i < fetchSize; i++) {
             if (rset.next()) {

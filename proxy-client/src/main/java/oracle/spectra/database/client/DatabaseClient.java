@@ -12,8 +12,8 @@ public class DatabaseClient implements AutoCloseable {
         this.manager = new DatabaseRequestResponseManager(channel);
     }
 
-    public DatabaseQueryStatement prepareQuery(String query) throws SQLException {
-        return new DatabaseQueryStatement(manager, query);
+    public DatabasePreparedStatement prepareQuery(String query) throws SQLException {
+        return new DatabasePreparedStatement(manager, query);
     }
 
     @Override

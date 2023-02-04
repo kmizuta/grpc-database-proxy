@@ -17,7 +17,8 @@ import java.sql.SQLException;
 @Grpc(name = "DatabaseProxy")
 public class DatabaseProxyServer implements DatabaseProxy {
 
-    private final String TNS = "(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-ashburn-1.oraclecloud.com))(connect_data=(service_name=myeuacmnbcwpupn_kmizutatest_low.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)(MY_WALLET_DIRECTORY=/Users/kmizuta/work/grpc/wallet))))";
+    private final String TNS = "(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-ashburn-1.oraclecloud.com))(connect_data=(service_name=myeuacmnbcwpupn_kmizutatest_low.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)(WALLET_LOCATION=/Users/kmizuta/work/grpc/wallet))))";
+//    private final String TNS = "(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-ashburn-1.oraclecloud.com))(connect_data=(service_name=myeuacmnbcwpupn_kmizutatest_low.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)(MY_WALLET_DIRECTORY=/Users/kmizuta/work/grpc/wallet))))";
     private final String JDBC_URL = String.format("jdbc:oracle:thin:@%s", TNS);
     private final String DBUSER = "scott";
     private final String DBPWD  = "TigerManager123!";
